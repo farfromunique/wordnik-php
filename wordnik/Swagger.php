@@ -20,6 +20,12 @@ function swagger_autoloader($className) {
 }
 spl_autoload_register('swagger_autoloader');
 
+/**
+ *
+ * NOTE: This has been updated from the version created by Swagger, to mesh with PSR-4 and be installable by composer.
+ * 
+ * The update was done by Aaron Coquet (aaron@acwpd.com) in 2017.
+ */
 
 class APIClient {
 
