@@ -30,7 +30,7 @@ namespace Wordnik;
 
 class WordListApi {
 
-	function __construct($apiClient) {
+	function __construct(APIClient $apiClient) {
 		$this->apiClient = $apiClient;
 	}
 
@@ -43,32 +43,25 @@ class WordListApi {
 	 * @return
 	 */
 
-	 public function updateWordList($permalink, $body=null, $auth_token) {
+	 public function updateWordList(string $permalink, $body=null, AuthenticationToken $auth_token) {
 
-			//parse inputs
-			$resourcePath = "/wordList.{format}/{permalink}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "PUT";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordList.{format}/{permalink}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "PUT";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			if($permalink != null) {
-				$resourcePath = str_replace("{" . "permalink" . "}",
-																		$this->apiClient->toPathValue($permalink), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			}
+	}
 	/**
 	 * deleteWordList
 	 * Deletes an existing WordList
@@ -77,32 +70,25 @@ class WordListApi {
 	 * @return
 	 */
 
-	 public function deleteWordList($permalink, $auth_token) {
+	 public function deleteWordList(string $permalink, AuthenticationToken $auth_token) {
 
-			//parse inputs
-			$resourcePath = "/wordList.{format}/{permalink}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "DELETE";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordList.{format}/{permalink}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "DELETE";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			if($permalink != null) {
-				$resourcePath = str_replace("{" . "permalink" . "}",
-																		$this->apiClient->toPathValue($permalink), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			}
+	}
 	/**
 	 * getWordListByPermalink
 	 * Fetches a WordList by ID
@@ -111,40 +97,32 @@ class WordListApi {
 	 * @return WordList
 	 */
 
-	 public function getWordListByPermalink($permalink, $auth_token) {
+	 public function getWordListByPermalink(string $permalink, AuthenticationToken $auth_token): WordList {
 
-			//parse inputs
-			$resourcePath = "/wordList.{format}/{permalink}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordList.{format}/{permalink}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			if($permalink != null) {
-				$resourcePath = str_replace("{" . "permalink" . "}",
-																		$this->apiClient->toPathValue($permalink), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'WordList');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'WordList');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * addWordsToWordList
 	 * Adds words to a WordList
@@ -154,32 +132,25 @@ class WordListApi {
 	 * @return
 	 */
 
-	 public function addWordsToWordList($permalink, $body=null, $auth_token) {
+	 public function addWordsToWordList(string $permalink, array $body=array(), AuthenticationToken $auth_token) {
 
-			//parse inputs
-			$resourcePath = "/wordList.{format}/{permalink}/words";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "POST";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordList.{format}/{permalink}/words";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "POST";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			if($permalink != null) {
-				$resourcePath = str_replace("{" . "permalink" . "}",
-																		$this->apiClient->toPathValue($permalink), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			}
+	}
 	/**
 	 * getWordListWords
 	 * Fetches words in a WordList
@@ -192,52 +163,36 @@ class WordListApi {
 	 * @return array[WordListWord]
 	 */
 
-	 public function getWordListWords($permalink, $auth_token, $sortBy=null, $sortOrder=null, $skip=null, $limit=null) {
+	 public function getWordListWords(string $permalink, AuthenticationToken $auth_token, string $sortBy='', string $sortOrder='desc', int $skip=0, int $limit=100): array {
 
-			//parse inputs
-			$resourcePath = "/wordList.{format}/{permalink}/words";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordList.{format}/{permalink}/words";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($sortBy != null) {
-				$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
-			}
-			if($sortOrder != null) {
-				$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
-			}
-			if($skip != null) {
-				$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			if($permalink != null) {
-				$resourcePath = str_replace("{" . "permalink" . "}",
-																		$this->apiClient->toPathValue($permalink), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
+		$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
+		$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[WordListWord]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response,'array[WordListWord]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * deleteWordsFromWordList
 	 * Removes words from a WordList
@@ -247,32 +202,26 @@ class WordListApi {
 	 * @return
 	 */
 
-	 public function deleteWordsFromWordList($permalink, $body=null, $auth_token) {
+	 public function deleteWordsFromWordList(string $permalink, array $body=array(), AuthenticationToken $auth_token) {
 
-			//parse inputs
-			$resourcePath = "/wordList.{format}/{permalink}/deleteWords";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "POST";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordList.{format}/{permalink}/deleteWords";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "POST";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			if($permalink != null) {
-				$resourcePath = str_replace("{" . "permalink" . "}",
-																		$this->apiClient->toPathValue($permalink), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
+
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			}
+	}
 
 }
 

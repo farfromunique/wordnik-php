@@ -18,11 +18,14 @@ class APIClient {
 	public static $PUT = "PUT";
 	public static $DELETE = "DELETE";
 
+	private $apiKey;
+	private $apiServer;
+
 	/**
 	 * @param string $apiKey your API key
 	 * @param string $apiServer the address of the API server
 	 */
-	function __construct($apiKey, $apiServer) {
+	function __construct(string $apiKey, string $apiServer) {
 		$this->apiKey = $apiKey;
 		$this->apiServer = $apiServer;
 	}
@@ -36,8 +39,8 @@ class APIClient {
 	 * @param array $headerParams parameters to be place in request header
 	 * @return unknown
 	 */
-	public function callAPI($resourcePath, $method, $queryParams, $postData,
-		$headerParams) {
+	public function callAPI(string $resourcePath, string $method, array $queryParams, array $postData,
+		array $headerParams): object {
 
 		$headers = array();
 		$headers[] = "Content-type: application/json";
@@ -101,7 +104,7 @@ class APIClient {
 			throw new Exception("Unauthorized API request to " . $url .
 					": ".json_decode($response)->message );
 		} else if ($response_info['http_code'] == 404) {
-			$data = null;
+			$data = null; // TODO: Throw error, instead.
 		} else {
 			throw new Exception("Can't connect to the api: " . $url .
 				" response code: " .
@@ -115,7 +118,7 @@ class APIClient {
 	/**
 	 * Build a JSON POST object
 	 */
-	public static function sanitizeForSerialization($postData) {
+	public static function sanitizeForSerialization(array $postData): array {
 		foreach ($postData as $key => $value) {
 			if (is_a($value, "DateTime")) {
 				$postData->{$key} = $value->format(DateTime::ISO8601);
@@ -130,7 +133,7 @@ class APIClient {
 	 * @param string $value a string which will be part of the path
 	 * @return string the serialized object
 	 */
-	public static function toPathValue($value) {
+	public static function toPathValue(string $value): string {
   		return rawurlencode($value);
 	}
 
@@ -142,7 +145,7 @@ class APIClient {
 	 * @param object $object an object to be serialized to a string
 	 * @return string the serialized object
 	 */
-	public static function toQueryValue($object) {
+	public static function toQueryValue(object $object): string {
 		if (is_array($object)) {
 			return implode(',', $object);
 		} else {
@@ -156,7 +159,7 @@ class APIClient {
 	 * @param string $value a string which will be part of the header
 	 * @return string the header string
 	 */
-	public static function toHeaderValue($value) {
+	public static function toHeaderValue(string $value): string {
   		return $value;
 	}
 
@@ -167,10 +170,10 @@ class APIClient {
 	 * @param string $class class name is passed as a string
 	 * @return object an instance of $class
 	 */
-	public static function deserialize($object, $class) {
+	public static function deserialize(object $object, string $class): object {
 
 		if (gettype($object) == "NULL") {
-		  	return $object;
+		  	return $object; // TODO: Throw error, instead.
 		 }
 
 	if (substr($class, 0, 6) == 'array[') {

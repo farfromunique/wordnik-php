@@ -30,7 +30,7 @@ namespace Wordnik;
 
 class WordApi {
 
-	function __construct($apiClient) {
+	function __construct(APIClient $apiClient) {
 		$this->apiClient = $apiClient;
 	}
 
@@ -45,49 +45,35 @@ class WordApi {
 	 * @return ExampleSearchResults
 	 */
 
-	 public function getExamples($word, $includeDuplicates=null, $useCanonical=null, $skip=null, $limit=null) {
+	 public function getExamples(string $word, bool $includeDuplicates=false, bool $useCanonical=false, int $skip=0, int $limit=100): ExampleSearchResults {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/examples";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/examples";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($includeDuplicates != null) {
-				$queryParams['includeDuplicates'] = $this->apiClient->toPathValue($includeDuplicates);
-			}
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
-			}
-			if($skip != null) {
-				$queryParams['skip'] = $this->apiClient->toPathValue($skip);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toPathValue($limit);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['includeDuplicates'] = $this->apiClient->toPathValue($includeDuplicates);
+		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
+		$queryParams['skip'] = $this->apiClient->toPathValue($skip);
+		$queryParams['limit'] = $this->apiClient->toPathValue($limit);
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
 
+		//make the API Call
+		
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			if(! $response){
-					return null;
-				}
-
-			$responseObject = $this->apiClient->deserialize($response,
-																											'ExampleSearchResults');
-			return $responseObject;
-
+		if(! $response){
+				return null; // TODO: Throw error, instead.
 			}
+
+		$responseObject = $this->apiClient->deserialize($response, 'ExampleSearchResults');
+		return $responseObject;
+	}
 	/**
 	 * getWord
 	 * Given a word as a string, returns the WordObject that represents it
@@ -97,43 +83,33 @@ class WordApi {
 	 * @return WordObject
 	 */
 
-	 public function getWord($word, $useCanonical=null, $includeSuggestions=null) {
+	 public function getWord(string $word, bool $useCanonical=false, $includeSuggestions=false): WordObject {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
-			}
-			if($includeSuggestions != null) {
-				$queryParams['includeSuggestions'] = $this->apiClient->toPathValue($includeSuggestions);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
+		$queryParams['includeSuggestions'] = $this->apiClient->toPathValue($includeSuggestions);
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'WordObject');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response,'WordObject');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getDefinitions
 	 * Return definitions for a word
@@ -147,55 +123,38 @@ class WordApi {
 	 * @return array[Definition]
 	 */
 
-	 public function getDefinitions($word, $partOfSpeech=null, $sourceDictionaries=null, $limit=null, $includeRelated=null, $useCanonical=null, $includeTags=null) {
+	 public function getDefinitions(string $word, string $partOfSpeech='', string $sourceDictionaries='ahd,wiktionary,webster,century,wordnet', int $limit=100, bool $includeRelated=true, bool $useCanonical=false, bool $includeTags=false): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/definitions";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/definitions";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toPathValue($limit);
-			}
-			if($partOfSpeech != null) {
-				$queryParams['partOfSpeech'] = $this->apiClient->toPathValue($partOfSpeech);
-			}
-			if($includeRelated != null) {
-				$queryParams['includeRelated'] = $this->apiClient->toPathValue($includeRelated);
-			}
-			if($sourceDictionaries != null) {
-				$queryParams['sourceDictionaries'] = $this->apiClient->toPathValue($sourceDictionaries);
-			}
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
-			}
-			if($includeTags != null) {
-				$queryParams['includeTags'] = $this->apiClient->toPathValue($includeTags);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['limit'] = $this->apiClient->toPathValue($limit);
+		$queryParams['partOfSpeech'] = $this->apiClient->toPathValue($partOfSpeech);
+		$queryParams['includeRelated'] = $this->apiClient->toPathValue($includeRelated);
+		$queryParams['sourceDictionaries'] = $this->apiClient->toPathValue($sourceDictionaries);
+		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
+		$queryParams['includeTags'] = $this->apiClient->toPathValue($includeTags);
+		$resourcePath = str_replace("{" . "word" . "}",
+																	$this->apiClient->toPathValue($word), $resourcePath);
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[Definition]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'array[Definition]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getTopExample
 	 * Returns a top example for a word
@@ -204,40 +163,32 @@ class WordApi {
 	 * @return Example
 	 */
 
-	 public function getTopExample($word, $useCanonical=null) {
+	 public function getTopExample(string $word, bool $useCanonical=false): Example {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/topExample";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/topExample";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
 
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'Example');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'Example');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getRelatedWords
 	 * Given a word as a string, returns relationships from the Word Graph
@@ -248,46 +199,37 @@ class WordApi {
 	 * @return array[Related]
 	 */
 
-	 public function getRelatedWords($word, $relationshipTypes=null, $useCanonical=null, $limitPerRelationshipType=null) {
+	 public function getRelatedWords(string $word, string $relationshipTypes='', bool $useCanonical=false, int $limitPerRelationshipType=0): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/relatedWords";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/relatedWords";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
-			}
-			if($relationshipTypes != null) {
-				$queryParams['relationshipTypes'] = $this->apiClient->toPathValue($relationshipTypes);
-			}
-			if($limitPerRelationshipType != null) {
-				$queryParams['limitPerRelationshipType'] = $this->apiClient->toPathValue($limitPerRelationshipType);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
+		$queryParams['relationshipTypes'] = $this->apiClient->toPathValue($relationshipTypes);
+		$queryParams['limitPerRelationshipType'] = $this->apiClient->toPathValue($limitPerRelationshipType);
+
+		if($word != null) {
+			$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[Related]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'array[Related]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getTextPronunciations
 	 * Returns text pronunciations for a given word
@@ -299,49 +241,38 @@ class WordApi {
 	 * @return array[TextPron]
 	 */
 
-	 public function getTextPronunciations($word, $sourceDictionary=null, $typeFormat=null, $useCanonical=null, $limit=null) {
+	 public function getTextPronunciations(string $word, string $sourceDictionary='', string $typeFormat='', bool $useCanonical=false, int $limit=100): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/pronunciations";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/pronunciations";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
-			}
-			if($sourceDictionary != null) {
-				$queryParams['sourceDictionary'] = $this->apiClient->toQueryValue($sourceDictionary);
-			}
-			if($typeFormat != null) {
-				$queryParams['typeFormat'] = $this->apiClient->toQueryValue($typeFormat);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
+		$queryParams['sourceDictionary'] = $this->apiClient->toQueryValue($sourceDictionary);
+		$queryParams['typeFormat'] = $this->apiClient->toQueryValue($typeFormat);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		
+		if($word != null) {
+			$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[TextPron]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'array[TextPron]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getHyphenation
 	 * Returns syllable information for a word
@@ -352,46 +283,36 @@ class WordApi {
 	 * @return array[Syllable]
 	 */
 
-	 public function getHyphenation($word, $sourceDictionary=null, $useCanonical=null, $limit=null) {
+	 public function getHyphenation(string $word, string $sourceDictionary='', bool $useCanonical=false, int $limit=100): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/hyphenation";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/hyphenation";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
-			}
-			if($sourceDictionary != null) {
-				$queryParams['sourceDictionary'] = $this->apiClient->toQueryValue($sourceDictionary);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
+		$queryParams['sourceDictionary'] = $this->apiClient->toQueryValue($sourceDictionary);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		
+		if($word != null) {
+			$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'array[Syllable]');
+		return $responseObject;
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[Syllable]');
-			return $responseObject;
-
-			}
+	}
 	/**
 	 * getWordFrequency
 	 * Returns word usage over time
@@ -402,46 +323,35 @@ class WordApi {
 	 * @return FrequencySummary
 	 */
 
-	 public function getWordFrequency($word, $useCanonical=null, $startYear=null, $endYear=null) {
+	 public function getWordFrequency(string $word, bool $useCanonical=false, int $startYear=0, int $endYear=9999): FrequencySummary {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/frequency";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/frequency";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
-			}
-			if($startYear != null) {
-				$queryParams['startYear'] = $this->apiClient->toQueryValue($startYear);
-			}
-			if($endYear != null) {
-				$queryParams['endYear'] = $this->apiClient->toQueryValue($endYear);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
+		$queryParams['startYear'] = $this->apiClient->toQueryValue($startYear);
+		$queryParams['endYear'] = $this->apiClient->toQueryValue($endYear);
+		if($word != null) {
+			$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'FrequencySummary');
-			return $responseObject;
-
-			}
+		$responseObject = $this->apiClient->deserialize($response, 'FrequencySummary');
+		return $responseObject;
+	}
 	/**
 	 * getPhrases
 	 * Fetches bi-gram phrases for a word
@@ -452,46 +362,36 @@ class WordApi {
 	 * @return array[Bigram]
 	 */
 
-	 public function getPhrases($word, $limit=null, $wlmi=null, $useCanonical=null) {
+	 public function getPhrases(string $word, int $limit=100, int $wlmi=0, bool $useCanonical=false): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/phrases";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/phrases";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($wlmi != null) {
-				$queryParams['wlmi'] = $this->apiClient->toQueryValue($wlmi);
-			}
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		$queryParams['wlmi'] = $this->apiClient->toQueryValue($wlmi);
+		$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
+		
+		if($word != null) {
+			$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'array[Bigram]');
+		return $responseObject;
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[Bigram]');
-			return $responseObject;
-
-			}
+	}
 	/**
 	 * getEtymologies
 	 * Fetches etymology data
@@ -500,40 +400,33 @@ class WordApi {
 	 * @return array[string]
 	 */
 
-	 public function getEtymologies($word, $useCanonical=null) {
+	 public function getEtymologies(string $word, bool $useCanonical=false): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/etymologies";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/etymologies";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[string]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'array[string]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getAudio
 	 * Fetches audio metadata for a word.
@@ -543,43 +436,35 @@ class WordApi {
 	 * @return array[AudioFile]
 	 */
 
-	 public function getAudio($word, $useCanonical=null, $limit=null) {
+	 public function getAudio(string $word, bool $useCanonical=false, int $limit=100): array {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/audio";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/audio";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($useCanonical != null) {
-				$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['useCanonical'] = $this->apiClient->toQueryValue($useCanonical);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[AudioFile]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'array[AudioFile]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getScrabbleScore
 	 * Returns the Scrabble score for a word
@@ -587,37 +472,31 @@ class WordApi {
 	 * @return ScrabbleScoreResult
 	 */
 
-	 public function getScrabbleScore($word) {
+	 public function getScrabbleScore(string $word): ScrabbleScoreResult {
 
-			//parse inputs
-			$resourcePath = "/word.{format}/{word}/scrabbleScore";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/word.{format}/{word}/scrabbleScore";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($word != null) {
-				$resourcePath = str_replace("{" . "word" . "}",
-																		$this->apiClient->toPathValue($word), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
+
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'ScrabbleScoreResult');
-			return $responseObject;
-
-			}
+		$responseObject = $this->apiClient->deserialize($response, 'ScrabbleScoreResult');
+		return $responseObject;
+	}
 
 }
 

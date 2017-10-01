@@ -30,7 +30,7 @@ namespace Wordnik;
 
 class WordsApi {
 
-	function __construct($apiClient) {
+	function __construct(APIClient $apiClient) {
 		$this->apiClient = $apiClient;
 	}
 
@@ -52,70 +52,70 @@ class WordsApi {
 	 * @return WordSearchResults
 	 */
 
-	 public function searchWords($query, $includePartOfSpeech=null, $excludePartOfSpeech=null, $caseSensitive=null, $minCorpusCount=null, $maxCorpusCount=null, $minDictionaryCount=null, $maxDictionaryCount=null, $minLength=null, $maxLength=null, $skip=null, $limit=null) {
+	 public function searchWords(string $query, string $includePartOfSpeech='', string $excludePartOfSpeech='', bool $caseSensitive=true, int $minCorpusCount=5, int $maxCorpusCount=-1, int $minDictionaryCount=1, int $maxDictionaryCount=-1, int $minLength=1, int $maxLength=-1, int $skip=0, int $limit=10) {
 
-			//parse inputs
-			$resourcePath = "/words.{format}/search/{query}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/words.{format}/search/{query}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($caseSensitive != null) {
-				$queryParams['caseSensitive'] = $this->apiClient->toQueryValue($caseSensitive);
-			}
-			if($includePartOfSpeech != null) {
-				$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
-			}
-			if($excludePartOfSpeech != null) {
-				$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
-			}
-			if($minCorpusCount != null) {
-				$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
-			}
-			if($maxCorpusCount != null) {
-				$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
-			}
-			if($minDictionaryCount != null) {
-				$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
-			}
-			if($maxDictionaryCount != null) {
-				$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
-			}
-			if($minLength != null) {
-				$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
-			}
-			if($maxLength != null) {
-				$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
-			}
-			if($skip != null) {
-				$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($query != null) {
-				$resourcePath = str_replace("{" . "query" . "}",
-																		$this->apiClient->toPathValue($query), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		if($caseSensitive != null) {
+			$queryParams['caseSensitive'] = $this->apiClient->toQueryValue($caseSensitive);
+		}
+		if($includePartOfSpeech != null) {
+			$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
+		}
+		if($excludePartOfSpeech != null) {
+			$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		}
+		if($minCorpusCount != null) {
+			$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
+		}
+		if($maxCorpusCount != null) {
+			$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
+		}
+		if($minDictionaryCount != null) {
+			$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
+		}
+		if($maxDictionaryCount != null) {
+			$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
+		}
+		if($minLength != null) {
+			$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
+		}
+		if($maxLength != null) {
+			$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
+		}
+		if($skip != null) {
+			$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
+		}
+		if($limit != null) {
+			$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		}
+		if($query != null) {
+			$resourcePath = str_replace("{" . "query" . "}",
+																	$this->apiClient->toPathValue($query), $resourcePath);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method,
+																					$queryParams, $body,
+																					$headerParams);
 
 
-			if(! $response){
-					return null;
-				}
-
-			$responseObject = $this->apiClient->deserialize($response,
-																											'WordSearchResults');
-			return $responseObject;
-
+		if(! $response){
+				return null; // TODO: Throw error, instead.
 			}
+
+		$responseObject = $this->apiClient->deserialize($response,
+																										'WordSearchResults');
+		return $responseObject;
+
+	}
 	/**
 	 * getWordOfTheDay
 	 * Returns a specific WordOfTheDay
@@ -125,34 +125,34 @@ class WordsApi {
 
 	 public function getWordOfTheDay($date=null) {
 
-			//parse inputs
-			$resourcePath = "/words.{format}/wordOfTheDay";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/words.{format}/wordOfTheDay";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($date != null) {
-				$queryParams['date'] = $this->apiClient->toQueryValue($date);
+		if($date != null) {
+			$queryParams['date'] = $this->apiClient->toQueryValue($date);
+		}
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method,
+																					$queryParams, $body,
+																					$headerParams);
+
+
+		if(! $response){
+				return null; // TODO: Throw error, instead.
 			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
 
+		$responseObject = $this->apiClient->deserialize($response,
+																										'WordOfTheDay');
+		return $responseObject;
 
-			if(! $response){
-					return null;
-				}
-
-			$responseObject = $this->apiClient->deserialize($response,
-																											'WordOfTheDay');
-			return $responseObject;
-
-			}
+	}
 	/**
 	 * reverseDictionary
 	 * Reverse dictionary search
@@ -175,81 +175,46 @@ class WordsApi {
 	 * @return DefinitionSearchResults
 	 */
 
-	 public function reverseDictionary($query, $findSenseForWord=null, $includeSourceDictionaries=null, $excludeSourceDictionaries=null, $includePartOfSpeech=null, $excludePartOfSpeech=null, $expandTerms=null, $sortBy=null, $sortOrder=null, $minCorpusCount=null, $maxCorpusCount=null, $minLength=null, $maxLength=null, $includeTags=null, $skip=null, $limit=null) {
+	 public function reverseDictionary(string $query, string $findSenseForWord='', string $includeSourceDictionaries='', string $excludeSourceDictionaries='', string $includePartOfSpeech='', string $excludePartOfSpeech='', string $expandTerms='', string $sortBy='', string $sortOrder='desc', int $minCorpusCount=5, int $maxCorpusCount=-1, int $minLength=1, int $maxLength=-1, bool $includeTags=false, int $skip=0, int $limit=10): DefinitionSearchResults {
 
-			//parse inputs
-			$resourcePath = "/words.{format}/reverseDictionary";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/words.{format}/reverseDictionary";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($query != null) {
-				$queryParams['query'] = $this->apiClient->toQueryValue($query);
-			}
-			if($findSenseForWord != null) {
-				$queryParams['findSenseForWord'] = $this->apiClient->toQueryValue($findSenseForWord);
-			}
-			if($includeSourceDictionaries != null) {
-				$queryParams['includeSourceDictionaries'] = $this->apiClient->toQueryValue($includeSourceDictionaries);
-			}
-			if($excludeSourceDictionaries != null) {
-				$queryParams['excludeSourceDictionaries'] = $this->apiClient->toQueryValue($excludeSourceDictionaries);
-			}
-			if($includePartOfSpeech != null) {
-				$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
-			}
-			if($excludePartOfSpeech != null) {
-				$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
-			}
-			if($minCorpusCount != null) {
-				$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
-			}
-			if($maxCorpusCount != null) {
-				$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
-			}
-			if($minLength != null) {
-				$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
-			}
-			if($maxLength != null) {
-				$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
-			}
-			if($expandTerms != null) {
-				$queryParams['expandTerms'] = $this->apiClient->toQueryValue($expandTerms);
-			}
-			if($includeTags != null) {
-				$queryParams['includeTags'] = $this->apiClient->toQueryValue($includeTags);
-			}
-			if($sortBy != null) {
-				$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
-			}
-			if($sortOrder != null) {
-				$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
-			}
-			if($skip != null) {
-				$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['query'] = $this->apiClient->toQueryValue($query);
+		$queryParams['findSenseForWord'] = $this->apiClient->toQueryValue($findSenseForWord);
+		$queryParams['includeSourceDictionaries'] = $this->apiClient->toQueryValue($includeSourceDictionaries);
+		$queryParams['excludeSourceDictionaries'] = $this->apiClient->toQueryValue($excludeSourceDictionaries);
+		$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
+		$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
+		$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
+		$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
+		$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
+		$queryParams['expandTerms'] = $this->apiClient->toQueryValue($expandTerms);
+		$queryParams['includeTags'] = $this->apiClient->toQueryValue($includeTags);
+		$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
+		$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
+		$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'DefinitionSearchResults');
+		return $responseObject;
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'DefinitionSearchResults');
-			return $responseObject;
-
-			}
+	}
 	/**
 	 * getRandomWords
 	 * Returns an array of random WordObjects
@@ -268,69 +233,42 @@ class WordsApi {
 	 * @return array[WordObject]
 	 */
 
-	 public function getRandomWords($includePartOfSpeech=null, $excludePartOfSpeech=null, $sortBy=null, $sortOrder=null, $hasDictionaryDef=null, $minCorpusCount=null, $maxCorpusCount=null, $minDictionaryCount=null, $maxDictionaryCount=null, $minLength=null, $maxLength=null, $limit=null) {
+	 public function getRandomWords(string $includePartOfSpeech='', string $excludePartOfSpeech='', string $sortBy='', string $sortOrder='desc', bool $hasDictionaryDef=false, int $minCorpusCount=0, int $maxCorpusCount=-1, int $minDictionaryCount=1, int $maxDictionaryCount=-1, int $minLength=5, int $maxLength=-1, int $limit=10): array {
 
-			//parse inputs
-			$resourcePath = "/words.{format}/randomWords";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/words.{format}/randomWords";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($hasDictionaryDef != null) {
-				$queryParams['hasDictionaryDef'] = $this->apiClient->toQueryValue($hasDictionaryDef);
-			}
-			if($includePartOfSpeech != null) {
-				$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
-			}
-			if($excludePartOfSpeech != null) {
-				$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
-			}
-			if($minCorpusCount != null) {
-				$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
-			}
-			if($maxCorpusCount != null) {
-				$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
-			}
-			if($minDictionaryCount != null) {
-				$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
-			}
-			if($maxDictionaryCount != null) {
-				$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
-			}
-			if($minLength != null) {
-				$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
-			}
-			if($maxLength != null) {
-				$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
-			}
-			if($sortBy != null) {
-				$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
-			}
-			if($sortOrder != null) {
-				$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['hasDictionaryDef'] = $this->apiClient->toQueryValue($hasDictionaryDef);
+		$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
+		$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
+		$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
+		$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
+		$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
+		$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
+		$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
+		$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
+		$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'array[WordObject]');
+		return $responseObject;
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[WordObject]');
-			return $responseObject;
-
-			}
+	}
 	/**
 	 * getRandomWord
 	 * Returns a single random WordObject
@@ -346,60 +284,40 @@ class WordsApi {
 	 * @return WordObject
 	 */
 
-	 public function getRandomWord($includePartOfSpeech=null, $excludePartOfSpeech=null, $hasDictionaryDef=null, $minCorpusCount=null, $maxCorpusCount=null, $minDictionaryCount=null, $maxDictionaryCount=null, $minLength=null, $maxLength=null) {
+	 public function getRandomWord(string $includePartOfSpeech='', string $excludePartOfSpeech='', int $hasDictionaryDef=0, int $minCorpusCount=0, int $maxCorpusCount=-1, int $minDictionaryCount=1, int $maxDictionaryCount=-1, int $minLength=5, int $maxLength=-1): WordObject {
 
-			//parse inputs
-			$resourcePath = "/words.{format}/randomWord";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/words.{format}/randomWord";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($hasDictionaryDef != null) {
-				$queryParams['hasDictionaryDef'] = $this->apiClient->toQueryValue($hasDictionaryDef);
-			}
-			if($includePartOfSpeech != null) {
-				$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
-			}
-			if($excludePartOfSpeech != null) {
-				$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
-			}
-			if($minCorpusCount != null) {
-				$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
-			}
-			if($maxCorpusCount != null) {
-				$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
-			}
-			if($minDictionaryCount != null) {
-				$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
-			}
-			if($maxDictionaryCount != null) {
-				$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
-			}
-			if($minLength != null) {
-				$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
-			}
-			if($maxLength != null) {
-				$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['hasDictionaryDef'] = $this->apiClient->toQueryValue($hasDictionaryDef);
+		$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
+		$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
+		$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
+		$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
+		$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
+		$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
+		$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'WordObject');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'WordObject');
+		return $responseObject;
 
-			}
+	}
 
 }
 

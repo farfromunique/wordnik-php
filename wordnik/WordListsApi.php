@@ -30,7 +30,7 @@ namespace Wordnik;
  
 class WordListsApi {
 
-	function __construct($apiClient) {
+	function __construct(APIClient $apiClient) {
 		$this->apiClient = $apiClient;
 	}
 
@@ -42,36 +42,31 @@ class WordListsApi {
 	 * @return WordList
 	 */
 
-	 public function createWordList($body=null, $auth_token) {
+	 public function createWordList(WordList $body=null, AuthenticationToken $auth_token): WordList {
 
-			//parse inputs
-			$resourcePath = "/wordLists.{format}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "POST";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/wordLists.{format}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "POST";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
+		
+		if(! $response){
+				return null; // TODO: Throw error, instead.
 			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
 
+		$responseObject = $this->apiClient->deserialize($response, 'WordList');
+		return $responseObject;
 
-			if(! $response){
-					return null;
-				}
-
-			$responseObject = $this->apiClient->deserialize($response,
-																											'WordList');
-			return $responseObject;
-
-			}
+	}
 
 }
 

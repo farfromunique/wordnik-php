@@ -30,7 +30,7 @@ namespace Wordnik;
 
 class AccountApi {
 
-	function __construct($apiClient) {
+	function __construct(APIClient $apiClient) {
 		$this->apiClient = $apiClient;
 	}
 
@@ -42,40 +42,32 @@ class AccountApi {
 	 * @return AuthenticationToken
 	 */
 
-	 public function authenticate($username, $password) {
+	 public function authenticate(string $username, string $password): AuthenticationToken {
 
-			//parse inputs
-			$resourcePath = "/account.{format}/authenticate/{username}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/account.{format}/authenticate/{username}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($password != null) {
-				$queryParams['password'] = $this->apiClient->toQueryValue($password);
-			}
-			if($username != null) {
-				$resourcePath = str_replace("{" . "username" . "}",
-																		$this->apiClient->toPathValue($username), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['password'] = $this->apiClient->toQueryValue($password);
+		$resourcePath = str_replace("{" . "username" . "}", $this->apiClient->toPathValue($username), $resourcePath);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'AuthenticationToken');
+		return $responseObject;
+	}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'AuthenticationToken');
-			return $responseObject;
-
-			}
 	/**
 	 * authenticatePost
 	 * Authenticates a user
@@ -84,37 +76,31 @@ class AccountApi {
 	 * @return AuthenticationToken
 	 */
 
-	 public function authenticatePost($username, $body) {
+	 public function authenticatePost(string $username, string $body): AuthenticationToken {
 
-			//parse inputs
-			$resourcePath = "/account.{format}/authenticate/{username}";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "POST";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/account.{format}/authenticate/{username}";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "POST";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($username != null) {
-				$resourcePath = str_replace("{" . "username" . "}",
-																		$this->apiClient->toPathValue($username), $resourcePath);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$resourcePath = str_replace("{" . "username" . "}", $this->apiClient->toPathValue($username), $resourcePath);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'AuthenticationToken');
+		return $responseObject;
+	}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'AuthenticationToken');
-			return $responseObject;
-
-			}
 	/**
 	 * getWordListsForLoggedInUser
 	 * Fetches WordList objects for the logged-in user.
@@ -124,42 +110,34 @@ class AccountApi {
 	 * @return array[WordList]
 	 */
 
-	 public function getWordListsForLoggedInUser($auth_token, $skip=null, $limit=null) {
+	 public function getWordListsForLoggedInUser(AuthenticationToken $auth_token, int $skip=null, int $limit=null): array {
 
-			//parse inputs
-			$resourcePath = "/account.{format}/wordLists";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/account.{format}/wordLists";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($skip != null) {
-				$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
-			}
-			if($limit != null) {
-				$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-			}
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'array[WordList]');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'array[WordList]');
+		return $responseObject;
 
-			}
+	}
 	/**
 	 * getApiTokenStatus
 	 * Returns usage statistics for the API account.
@@ -167,36 +145,33 @@ class AccountApi {
 	 * @return ApiTokenStatus
 	 */
 
-	 public function getApiTokenStatus($api_key=null) {
+	 public function getApiTokenStatus(string $api_key=null): ApiTokenStatus {
 
-			//parse inputs
-			$resourcePath = "/account.{format}/apiTokenStatus";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/account.{format}/apiTokenStatus";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($api_key != null) {
-			 	$headerParams['api_key'] = $this->apiClient->toHeaderValue($api_key);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['api_key'] = $this->apiClient->toHeaderValue($api_key);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
-			if(! $response){
-					return null;
-				}
+		if(! $response){
+			return null; // TODO: Throw error, instead.
+		}
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'ApiTokenStatus');
-			return $responseObject;
+		$responseObject = $this->apiClient->deserialize($response, 'ApiTokenStatus');
+		return $responseObject;
 
-			}
+	}
+
 	/**
 	 * getLoggedInUser
 	 * Returns the logged-in User
@@ -204,36 +179,31 @@ class AccountApi {
 	 * @return User
 	 */
 
-	 public function getLoggedInUser($auth_token) {
+	 public function getLoggedInUser(AuthenticationToken $auth_token): User {
 
-			//parse inputs
-			$resourcePath = "/account.{format}/user";
-			$resourcePath = str_replace("{format}", "json", $resourcePath);
-			$method = "GET";
-			$queryParams = array();
-			$headerParams = array();
+		//parse inputs
+		$resourcePath = "/account.{format}/user";
+		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$method = "GET";
+		$queryParams = array();
+		$headerParams = array();
 
-			if($auth_token != null) {
-			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-			}
-			//make the API Call
-			if (! isset($body)) {
-				$body = null;
-			}
-			$response = $this->apiClient->callAPI($resourcePath, $method,
-																						$queryParams, $body,
-																						$headerParams);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		
+		//make the API Call
+		if (! isset($body)) {
+			$body = null;
+		}
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
+		if(! $response) {
+			return null; // TODO: Throw error, instead.
+		}
 
-			if(! $response){
-					return null;
-				}
+		$responseObject = $this->apiClient->deserialize($response, 'User');
+		return $responseObject;
 
-			$responseObject = $this->apiClient->deserialize($response,
-																											'User');
-			return $responseObject;
-
-			}
+	}
 
 }
 
