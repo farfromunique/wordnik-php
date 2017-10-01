@@ -28,7 +28,7 @@ class APIClient {
 	}
 
 
-    /**
+	/**
 	 * @param string $resourcePath path to method endpoint
 	 * @param string $method method to call
 	 * @param array $queryParams parameters to be place in query URL
@@ -42,18 +42,18 @@ class APIClient {
 		$headers = array();
 		$headers[] = "Content-type: application/json";
 
-        # Allow API key from $headerParams to override default
-        $added_api_key = False;
+		# Allow API key from $headerParams to override default
+		$added_api_key = False;
 		if ($headerParams != null) {
 			foreach ($headerParams as $key => $val) {
 				$headers[] = "$key: $val";
 				if ($key == 'api_key') {
-				    $added_api_key = True;
+					$added_api_key = True;
 				}
 			}
 		}
 		if (! $added_api_key) {
-		    $headers[] = "api_key: " . $this->apiKey;
+			$headers[] = "api_key: " . $this->apiKey;
 		}
 
 		if (is_object($postData) or is_array($postData)) {
@@ -143,11 +143,11 @@ class APIClient {
 	 * @return string the serialized object
 	 */
 	public static function toQueryValue($object) {
-        if (is_array($object)) {
-            return implode(',', $object);
-        } else {
-            return $object;
-        }
+		if (is_array($object)) {
+			return implode(',', $object);
+		} else {
+			return $object;
+		}
 	}
 
 	/**
@@ -170,19 +170,19 @@ class APIClient {
 	public static function deserialize($object, $class) {
 
 		if (gettype($object) == "NULL") {
-	      	return $object;
-	     }
+		  	return $object;
+		 }
 
-    if (substr($class, 0, 6) == 'array[') {
-      $sub_class = substr($class, 6, -1);
-      $sub_objects = array();
-      foreach ($object as $sub_object) {
-        $sub_objects[] = self::deserialize($sub_object,
-                                    			 $sub_class);
-      }
-      return $sub_objects;
-    } elseif ($class == 'DateTime') {
-      		return new DateTime($object);
+	if (substr($class, 0, 6) == 'array[') {
+	  $sub_class = substr($class, 6, -1);
+	  $sub_objects = array();
+	  foreach ($object as $sub_object) {
+		$sub_objects[] = self::deserialize($sub_object,
+												 $sub_class);
+	  }
+	  return $sub_objects;
+	} elseif ($class == 'DateTime') {
+	  		return new DateTime($object);
 		} elseif (in_array($class, array('string', 'int', 'float', 'bool'))) {
 			settype($object, $class);
 			return $object;

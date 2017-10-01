@@ -31,47 +31,47 @@ namespace Wordnik;
 class WordListsApi {
 
 	function __construct($apiClient) {
-	  $this->apiClient = $apiClient;
+		$this->apiClient = $apiClient;
 	}
 
-  /**
+	/**
 	 * createWordList
 	 * Creates a WordList.
-   * body, WordList: WordList to create (optional)
-   * auth_token, string: The auth token of the logged-in user, obtained by calling /account.{format}/authenticate/{username} (described above) (required)
-   * @return WordList
+	 * body, WordList: WordList to create (optional)
+	 * auth_token, string: The auth token of the logged-in user, obtained by calling /account.{format}/authenticate/{username} (described above) (required)
+	 * @return WordList
 	 */
 
-   public function createWordList($body=null, $auth_token) {
+	 public function createWordList($body=null, $auth_token) {
 
-  		//parse inputs
-  		$resourcePath = "/wordLists.{format}";
-  		$resourcePath = str_replace("{format}", "json", $resourcePath);
-  		$method = "POST";
-      $queryParams = array();
-      $headerParams = array();
+			//parse inputs
+			$resourcePath = "/wordLists.{format}";
+			$resourcePath = str_replace("{format}", "json", $resourcePath);
+			$method = "POST";
+			$queryParams = array();
+			$headerParams = array();
 
-      if($auth_token != null) {
-  		 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
-  		}
-      //make the API Call
-      if (! isset($body)) {
-        $body = null;
-      }
-  		$response = $this->apiClient->callAPI($resourcePath, $method,
-  		                                      $queryParams, $body,
-  		                                      $headerParams);
+			if($auth_token != null) {
+			 	$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+			}
+			//make the API Call
+			if (! isset($body)) {
+				$body = null;
+			}
+			$response = $this->apiClient->callAPI($resourcePath, $method,
+																						$queryParams, $body,
+																						$headerParams);
 
 
-      if(! $response){
-          return null;
-        }
+			if(! $response){
+					return null;
+				}
 
-  		$responseObject = $this->apiClient->deserialize($response,
-  		                                                'WordList');
-  		return $responseObject;
+			$responseObject = $this->apiClient->deserialize($response,
+																											'WordList');
+			return $responseObject;
 
-      }
+			}
 
 }
 
