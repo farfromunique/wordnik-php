@@ -28,6 +28,7 @@
  * 
  * The update was done by Aaron Coquet (aaron@acwpd.com) in 2017.
  */
+namespace Wordnik;
 
 class WordOfTheDay {
 
