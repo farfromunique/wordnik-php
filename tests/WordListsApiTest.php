@@ -1,4 +1,5 @@
 <?php
+namespace wordnik\tests;
 
 require_once 'BaseApiTest.php';
 
