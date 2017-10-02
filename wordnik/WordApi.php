@@ -45,7 +45,7 @@ class WordApi {
 	 * @return ExampleSearchResults
 	 */
 
-	 public function getExamples(string $word, bool $includeDuplicates=false, bool $useCanonical=false, int $skip=0, int $limit=100): ExampleSearchResults {
+	 public function getExamples(string $word, string $includeDuplicates='false', string $useCanonical='false', int $skip=0, int $limit=100): ExampleSearchResults {
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}/examples";
@@ -59,17 +59,16 @@ class WordApi {
 		$queryParams['skip'] = $this->apiClient->toPathValue($skip);
 		$queryParams['limit'] = $this->apiClient->toPathValue($limit);
 		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
-
 		//make the API Call
 		
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 		if(! $response){
-				return null; // TODO: Throw error, instead.
-			}
+			return null; // TODO: Throw error, instead.
+		}
 
 		$responseObject = $this->apiClient->deserialize($response, 'ExampleSearchResults');
 		return $responseObject;
@@ -83,7 +82,7 @@ class WordApi {
 	 * @return WordObject
 	 */
 
-	 public function getWord(string $word, bool $useCanonical=false, $includeSuggestions=false): WordObject {
+	 public function getWord(string $word, string $useCanonical='false', $includeSuggestions=false): WordObject {
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}";
@@ -95,10 +94,9 @@ class WordApi {
 		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
 		$queryParams['includeSuggestions'] = $this->apiClient->toPathValue($includeSuggestions);
 		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
-
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -123,7 +121,7 @@ class WordApi {
 	 * @return array[Definition]
 	 */
 
-	 public function getDefinitions(string $word, string $partOfSpeech='', string $sourceDictionaries='ahd,wiktionary,webster,century,wordnet', int $limit=100, bool $includeRelated=true, bool $useCanonical=false, bool $includeTags=false): array {
+	 public function getDefinitions(string $word, string $partOfSpeech='', string $sourceDictionaries='', int $limit=200, bool $includeRelated=true, bool $useCanonical=false, bool $includeTags=false): array {
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}/definitions";
@@ -138,17 +136,21 @@ class WordApi {
 		$queryParams['sourceDictionaries'] = $this->apiClient->toPathValue($sourceDictionaries);
 		$queryParams['useCanonical'] = $this->apiClient->toPathValue($useCanonical);
 		$queryParams['includeTags'] = $this->apiClient->toPathValue($includeTags);
-		$resourcePath = str_replace("{" . "word" . "}",
-																	$this->apiClient->toPathValue($word), $resourcePath);
+		$resourcePath = str_replace("{" . "word" . "}", $this->apiClient->toPathValue($word), $resourcePath);
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
 		if(! $response){
-			return null; // TODO: Throw error, instead.
+			if (count($response) === 0) {
+				$err = 'Response has length 0';
+			} else {
+				$err = 'Unknown Error';
+			}
+			throw new \Exception("Error: Response is falsey" . $err, 1);			
 		}
 
 		$responseObject = $this->apiClient->deserialize($response, 'array[Definition]');
@@ -177,7 +179,7 @@ class WordApi {
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -217,7 +219,7 @@ class WordApi {
 		}
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -260,7 +262,7 @@ class WordApi {
 		}
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -301,7 +303,7 @@ class WordApi {
 		}
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -340,7 +342,7 @@ class WordApi {
 		}
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -380,7 +382,7 @@ class WordApi {
 		}
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -414,7 +416,7 @@ class WordApi {
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -452,7 +454,7 @@ class WordApi {
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -485,7 +487,7 @@ class WordApi {
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 

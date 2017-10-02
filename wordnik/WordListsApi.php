@@ -51,11 +51,11 @@ class WordListsApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 		

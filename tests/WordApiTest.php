@@ -1,7 +1,7 @@
 <?php
 namespace wordnik\tests;
 
-require_once 'BaseApiTest.php';
+require "BaseApiTest.php";
 
 date_default_timezone_set('America/Los_Angeles');
 
@@ -31,7 +31,7 @@ class WordApiTest extends BaseApiTest {
   }
 
   public function testGetWordWithCanonicalForm() {
-    $res = $this->wordApi->getWord('cAt', $useCanonical='true');
+    $res = $this->wordApi->getWord('cAt', 'true');
     $this->assertEquals('cat', $res->word);
   }
 
@@ -46,7 +46,7 @@ class WordApiTest extends BaseApiTest {
   }
 
   public function testGetExamples() {
-    $res = $this->wordApi->getExamples('cat', $limit=5);
+    $res = $this->wordApi->getExamples('cat', 'false', 'false', 0, $limit=5);
     $this->assertEquals(5, count($res->examples));
   }
 
@@ -56,7 +56,7 @@ class WordApiTest extends BaseApiTest {
   }
 
   public function testGetHyphenation() {
-    $res = $this->wordApi->getHyphenation('catalog', $useCanonical=null, $sourceDictionary=null, $limit=1);
+    $res = $this->wordApi->getHyphenation('catalog', $sourceDictionary='', $useCanonical=false, $limit=1);
     $this->assertEquals(1, count($res));
   }
 

@@ -56,7 +56,7 @@ class AccountApi {
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -76,7 +76,7 @@ class AccountApi {
 	 * @return AuthenticationToken
 	 */
 
-	 public function authenticatePost(string $username, string $body): AuthenticationToken {
+	/* public function authenticatePost(string $username, string $body): AuthenticationToken {
 
 		//parse inputs
 		$resourcePath = "/account.{format}/authenticate/{username}";
@@ -89,7 +89,9 @@ class AccountApi {
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
+		} elseif (! is_array($body)) {
+			$body = [$body];
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -99,7 +101,7 @@ class AccountApi {
 
 		$responseObject = $this->apiClient->deserialize($response, 'AuthenticationToken');
 		return $responseObject;
-	}
+	}*/
 
 	/**
 	 * getWordListsForLoggedInUser
@@ -121,17 +123,22 @@ class AccountApi {
 
 		$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
 		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 
 		if(! $response){
-			return null; // TODO: Throw error, instead.
+			if (count($response) === 0) {
+				$err = 'Response has length 0';
+			} else {
+				$err = 'Unknown Error';
+			}
+			throw new \Exception("Error: Response is falsey. " . $err, 1);			
 		}
 
 		$responseObject = $this->apiClient->deserialize($response, 'array[WordList]');
@@ -145,7 +152,7 @@ class AccountApi {
 	 * @return ApiTokenStatus
 	 */
 
-	 public function getApiTokenStatus(string $api_key=null): ApiTokenStatus {
+	 public function getApiTokenStatus(AuthenticationToken $api_key): ApiTokenStatus {
 
 		//parse inputs
 		$resourcePath = "/account.{format}/apiTokenStatus";
@@ -154,11 +161,11 @@ class AccountApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['api_key'] = $this->apiClient->toHeaderValue($api_key);
+		$queryParams['api_key'] = $this->apiClient->toHeaderValue($api_key->token);
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -188,11 +195,11 @@ class AccountApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 

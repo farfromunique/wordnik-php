@@ -61,58 +61,30 @@ class WordsApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		if($caseSensitive != null) {
-			$queryParams['caseSensitive'] = $this->apiClient->toQueryValue($caseSensitive);
-		}
-		if($includePartOfSpeech != null) {
-			$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
-		}
-		if($excludePartOfSpeech != null) {
-			$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
-		}
-		if($minCorpusCount != null) {
-			$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
-		}
-		if($maxCorpusCount != null) {
-			$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
-		}
-		if($minDictionaryCount != null) {
-			$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
-		}
-		if($maxDictionaryCount != null) {
-			$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
-		}
-		if($minLength != null) {
-			$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
-		}
-		if($maxLength != null) {
-			$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
-		}
-		if($skip != null) {
-			$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
-		}
-		if($limit != null) {
-			$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-		}
-		if($query != null) {
-			$resourcePath = str_replace("{" . "query" . "}",
-																	$this->apiClient->toPathValue($query), $resourcePath);
-		}
+		$queryParams['caseSensitive'] = $this->apiClient->toQueryValue($caseSensitive);
+		$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
+		$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
+		$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
+		$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
+		$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
+		$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
+		$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
+		$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
+		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
+		$resourcePath = str_replace("{" . "query" . "}", $this->apiClient->toPathValue($query), $resourcePath);
+
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
-		$response = $this->apiClient->callAPI($resourcePath, $method,
-																					$queryParams, $body,
-																					$headerParams);
-
+		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
 		if(! $response){
-				return null; // TODO: Throw error, instead.
-			}
+			return null; // TODO: Throw error, instead.
+		}
 
-		$responseObject = $this->apiClient->deserialize($response,
-																										'WordSearchResults');
+		$responseObject = $this->apiClient->deserialize($response, 'WordSearchResults');
 		return $responseObject;
 
 	}
@@ -137,7 +109,7 @@ class WordsApi {
 		}
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method,
 																					$queryParams, $body,
@@ -203,7 +175,7 @@ class WordsApi {
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -233,7 +205,7 @@ class WordsApi {
 	 * @return array[WordObject]
 	 */
 
-	 public function getRandomWords(string $includePartOfSpeech='', string $excludePartOfSpeech='', string $sortBy='', string $sortOrder='desc', bool $hasDictionaryDef=false, int $minCorpusCount=0, int $maxCorpusCount=-1, int $minDictionaryCount=1, int $maxDictionaryCount=-1, int $minLength=5, int $maxLength=-1, int $limit=10): array {
+	 public function getRandomWords(string $includePartOfSpeech='', string $excludePartOfSpeech='', string $sortBy='', string $sortOrder='desc', string $hasDictionaryDef='false', int $minCorpusCount=0, int $maxCorpusCount=-1, int $minDictionaryCount=1, int $maxDictionaryCount=-1, int $minLength=5, int $maxLength=-1, int $limit=10): array {
 
 		//parse inputs
 		$resourcePath = "/words.{format}/randomWords";
@@ -243,21 +215,28 @@ class WordsApi {
 		$headerParams = array();
 
 		$queryParams['hasDictionaryDef'] = $this->apiClient->toQueryValue($hasDictionaryDef);
-		$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
-		$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		if (! $includePartOfSpeech === '') {
+			$queryParams['includePartOfSpeech'] = $this->apiClient->toQueryValue($includePartOfSpeech);
+		}
+		if (! $excludePartOfSpeech === '') {
+			$queryParams['excludePartOfSpeech'] = $this->apiClient->toQueryValue($excludePartOfSpeech);
+		}
+		if (! $sortBy === '') {
+			$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
+		}
 		$queryParams['minCorpusCount'] = $this->apiClient->toQueryValue($minCorpusCount);
 		$queryParams['maxCorpusCount'] = $this->apiClient->toQueryValue($maxCorpusCount);
 		$queryParams['minDictionaryCount'] = $this->apiClient->toQueryValue($minDictionaryCount);
 		$queryParams['maxDictionaryCount'] = $this->apiClient->toQueryValue($maxDictionaryCount);
 		$queryParams['minLength'] = $this->apiClient->toQueryValue($minLength);
 		$queryParams['maxLength'] = $this->apiClient->toQueryValue($maxLength);
-		$queryParams['sortBy'] = $this->apiClient->toQueryValue($sortBy);
 		$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
 		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
 		
+		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -305,7 +284,7 @@ class WordsApi {
 		
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 

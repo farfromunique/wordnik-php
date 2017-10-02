@@ -52,12 +52,13 @@ class WordListApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
 		//make the API Call
+
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -84,7 +85,7 @@ class WordListApi {
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -106,12 +107,12 @@ class WordListApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -141,12 +142,12 @@ class WordListApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -176,12 +177,12 @@ class WordListApi {
 		$queryParams['sortOrder'] = $this->apiClient->toQueryValue($sortOrder);
 		$queryParams['skip'] = $this->apiClient->toQueryValue($skip);
 		$queryParams['limit'] = $this->apiClient->toQueryValue($limit);
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 
@@ -211,12 +212,12 @@ class WordListApi {
 		$queryParams = array();
 		$headerParams = array();
 
-		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token);
+		$headerParams['auth_token'] = $this->apiClient->toHeaderValue($auth_token->token);
 		$resourcePath = str_replace("{" . "permalink" . "}", $this->apiClient->toPathValue($permalink), $resourcePath);
 
 		//make the API Call
 		if (! isset($body)) {
-			$body = null;
+			$body = array();
 		}
 		$response = $this->apiClient->callAPI($resourcePath, $method, $queryParams, $body, $headerParams);
 

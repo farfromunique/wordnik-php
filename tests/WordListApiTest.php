@@ -56,7 +56,7 @@ class WordListApiTest extends BaseApiTest {
                                            $body=$wordsToAdd,
                                            $this->authToken);
 
-    $res = $this->wordListApi->getWordListWords($this->existingList->permalink, $this->authToken, $sortBy=null, $sortOrder=null, $skip=null, $limit=null);
+    $res = $this->wordListApi->getWordListWords($this->existingList->permalink, $this->authToken);
 
     $returnedWords = array();
 
@@ -87,13 +87,11 @@ class WordListApiTest extends BaseApiTest {
     $word3->word = "scrumptious";
     $wordsToRemove[] = $word3;
 
-    $res = $this->wordListApi->getWordListWords($this->existingList->permalink, $this->authToken, $sortBy=null, $sortOrder=null, $skip=null, $limit=null);
+    $res = $this->wordListApi->getWordListWords($this->existingList->permalink, $this->authToken);
 
-    $this->wordListApi->deleteWordsFromWordList($this->existingList->permalink,
-                                           $body=$wordsToRemove,
-                                           $this->authToken);
+    $this->wordListApi->deleteWordsFromWordList($this->existingList->permalink, $body=$wordsToRemove, $this->authToken);
 
-    $res = $this->wordListApi->getWordListWords($this->existingList->permalink, $this->authToken, $sortBy=null, $sortOrder=null, $skip=null, $limit=null);
+    $res = $this->wordListApi->getWordListWords($this->existingList->permalink, $this->authToken);
 
     $returnedWords = array();
     foreach ($res as $wordListWord) {

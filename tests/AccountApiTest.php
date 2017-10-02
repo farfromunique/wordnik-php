@@ -7,26 +7,24 @@ class AccountApiTest extends BaseApiTest {
 
   public function setUp() {
     parent::setUp();
-    $this->authToken = $this->accountApi->authenticate($this->username,
-                                                      $this->password)->token;
+    $this->authToken = $this->accountApi->authenticate($this->username, $this->password);
     date_default_timezone_set('America/Los_Angeles');
   }
 
   public function testAuthenticate() {
-    $res = $this->accountApi->authenticate($this->username,
-                                           $this->password);
+    $res = $this->accountApi->authenticate($this->username, $this->password);
     $this->assertObjectHasAttribute('token', $res);
     $this->assertNotEquals(0, $res->userId);
     $this->assertObjectHasAttribute('userSignature', $res);
   }
 
+/* Disabling this test, as the underlying function is disabled
   public function testAuthenticatePost() {
-    $res = $this->accountApi->authenticatePost($this->username,
-                                           $this->password);
+    $res = $this->accountApi->authenticatePost($this->username, $this->password);
     $this->assertObjectHasAttribute('token', $res);
     $this->assertNotEquals(0, $res->userId);
     $this->assertObjectHasAttribute('userSignature', $res);
-  }
+  } */
 
   public function testGetWordListsForLoggedInUser() {
     $res = $this->accountApi->getWordListsForLoggedInUser($this->authToken);
@@ -34,7 +32,7 @@ class AccountApiTest extends BaseApiTest {
   }
 
   public function testGetApiTokenStatus() {
-    $res = $this->accountApi->getApiTokenStatus();
+    $res = $this->accountApi->getApiTokenStatus($this->authToken);
     $this->assertObjectHasAttribute('valid', $res);
     $this->assertNotEquals(0, count($res->remainingCalls));
   }
