@@ -9,32 +9,25 @@ class WordListsApiTest extends BaseApiTest {
 
   public function setUp() {
     parent::setUp();
-    $this->authToken = $this->accountApi->authenticate($this->username,
-                                                      $this->password)->token;
+    $this->authToken = $this->accountApi->authenticate($this->username,$this->password);
   }
 
 
   public function testCreateWordList() {
-    $wordList = new WordList();
+    $wordList = new \wordnik\WordList();
     $wordList->name = "my test list";
     $wordList->type = "PUBLIC";
     $wordList->description = "some words I want to play with";
 
-    $res = $this->wordListsApi->createWordList($body=$wordList,
-                                               $this->authToken);
+    $res = $this->wordListsApi->createWordList($body=$wordList, $this->authToken);
     $this->assertEquals($wordList->description, $res->description);
 
     $wordsToAdd = array();
-    $word1 = new StringValue();
+    $word1 = new \wordnik\StringValue();
     $word1->word = "foo";
     $wordsToAdd[] = $word1;
 
-    $this->wordListApi->addWordsToWordList($res->permalink,
-                                           $body=$wordsToAdd,
-                                           $this->authToken);
-
-
-
+    $this->wordListApi->addWordsToWordList($res->permalink, $body=$wordsToAdd, $this->authToken);
   }
 
 }

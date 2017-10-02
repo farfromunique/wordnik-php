@@ -27,24 +27,24 @@
 
 namespace wordnik\tests;
 
-require_once 'wordnik/Swagger.php';
+require __DIR__ . '/../vendor/autoload.php';
 // This used to be required, but now gives an error:
 // Cannot redeclare phpunit_autoload()
 // require_once '/usr/lib/php/PHPUnit/Autoload.php';
 
-class BaseApiTest extends PHPUnit_Framework_TestCase {
+class BaseApiTest extends TestCase {
 
   public function setUp() {
     $this->apiUrl = 'http://api.wordnik.com/v4';
     $this->apiKey = "b1672335056adf6367729016818029d8dd66d4aa52d5a7886";
     $this->username = "aaron@acwpd.com";
     $this->password = "CoqueAC160NK!";
-    $this->client = new APIClient($this->apiKey, $this->apiUrl);
-    $this->accountApi = new AccountApi($this->client);
-    $this->wordApi = new WordApi($this->client);
-    $this->wordListApi = new WordListApi($this->client);
-    $this->wordListsApi = new WordListsApi($this->client);
-    $this->wordsApi = new WordsApi($this->client);
+    $this->client = new \wordnik\APIClient($this->apiKey, $this->apiUrl);
+    $this->accountApi = new \wordnik\AccountApi($this->client);
+    $this->wordApi = new \wordnik\WordApi($this->client);
+    $this->wordListApi = new \wordnik\WordListApi($this->client);
+    $this->wordListsApi = new \wordnik\WordListsApi($this->client);
+    $this->wordsApi = new \wordnik\WordsApi($this->client);
   }
 
   public function tearDown() {

@@ -74,7 +74,6 @@ class APIClient {
 		if (! empty($queryParams)) {
 			$url = ($url . '?' . http_build_query($queryParams));
 		}
-
 		if ($method == self::$POST) {
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
@@ -86,7 +85,7 @@ class APIClient {
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
 		} else if ($method != self::$GET) {
-			throw new Exception('Method ' . $method . ' is not recognized.');
+			throw new \Exception('Method ' . $method . ' is not recognized.');
 		}
 		curl_setopt($curl, CURLOPT_URL, $url);
 
@@ -96,19 +95,16 @@ class APIClient {
 
 		// Handle the response
 		if ($response_info['http_code'] == 0) {
-			throw new Exception("TIMEOUT: api call to " . $url .
+			throw new \Exception("TIMEOUT: api call to " . $url .
 				" took more than 5s to return" );
 		} else if ($response_info['http_code'] == 200) {
 			$data = json_decode($response);
 		} else if ($response_info['http_code'] == 401) {
-			throw new Exception("Unauthorized API request to " . $url .
-					": ".json_decode($response)->message );
+			throw new \Exception("Unauthorized API request to " . $url . ": ".json_decode($response)->message );
 		} else if ($response_info['http_code'] == 404) {
 			$data = null; // TODO: Throw error, instead.
 		} else {
-			throw new Exception("Can't connect to the api: " . $url .
-				" response code: " .
-				$response_info['http_code']);
+			throw new \Exception("Can't connect to the api: " . $url . " response code: " . $response_info['http_code']);
 		}
 
 
@@ -121,7 +117,7 @@ class APIClient {
 	public static function sanitizeForSerialization(array $postData): array {
 		foreach ($postData as $key => $value) {
 			if (is_a($value, "DateTime")) {
-				$postData->{$key} = $value->format(DateTime::ISO8601);
+				$postData->{$key} = $value->format(\DateTime::ISO8601);
 			}
 		}
 		return $postData;

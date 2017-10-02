@@ -9,12 +9,11 @@ class WordListApiTest extends BaseApiTest {
 
   public function setUp() {
     parent::setUp();
-    $this->authToken = $this->accountApi->authenticate($this->username,
-                                                      $this->password)->token;
+    $this->authToken = $this->accountApi->authenticate($this->username, $this->password);
     $lists = $this->accountApi->getWordListsForLoggedInUser($this->authToken, $skip=null, $limit=1);
     $this->existingList = $lists[0];
 
-    $this->wordList = new WordList();
+    $this->wordList = new \wordnik\WordList();
     $this->wordList->name = "my test list";
     $this->wordList->type = "PUBLIC";
     $this->wordList->description = "some words I want to play with";
@@ -40,16 +39,16 @@ class WordListApiTest extends BaseApiTest {
 
   public function testAddWordsToWordList() {
     $wordsToAdd = array();
-    $word1 = new StringValue();
+    $word1 = new \wordnik\StringValue();
     $word1->word = "delicious";
     $wordsToAdd[] = $word1;
-    $word2 = new StringValue();
+    $word2 = new \wordnik\StringValue();
     $word2->word = "tasty";
     $wordsToAdd[] = $word2;
-    $word3 = new StringValue();
+    $word3 = new \wordnik\StringValue();
     $word3->word = "scrumptious";
     $wordsToAdd[] = $word3;
-    $word4 = new StringValue();
+    $word4 = new \wordnik\StringValue();
     $word4->word = "not to be deleted";
     $wordsToAdd[] = $word4;
 
@@ -78,13 +77,13 @@ class WordListApiTest extends BaseApiTest {
 
   public function testDeleteWordsFromList() {
     $wordsToRemove = array();
-    $word1 = new StringValue();
+    $word1 = new \wordnik\StringValue();
     $word1->word = "delicious";
     $wordsToRemove[] = $word1;
-    $word2 = new StringValue();
+    $word2 = new \wordnik\StringValue();
     $word2->word = "tasty";
     $wordsToRemove[] = $word2;
-    $word3 = new StringValue();
+    $word3 = new \wordnik\StringValue();
     $word3->word = "scrumptious";
     $wordsToRemove[] = $word3;
 

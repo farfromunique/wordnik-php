@@ -44,7 +44,6 @@ class WordList {
       'description' => 'string',
       'numberWordsInList' => 'int',
       'type' => 'string'
-
     );
 
   public $id; // int
