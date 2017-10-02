@@ -41,7 +41,15 @@
     ],
     "autoload": {
         "psr-4": {
-            "wordnik\\": "wordnik/"
+            "wordnik\\": [
+                "wordnik/",
+                "wordnik/models/"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "wordnik\\tests\\": "tests/"
         }
     }
 }
