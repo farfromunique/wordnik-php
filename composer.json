@@ -51,5 +51,8 @@
         "psr-4": {
             "wordnik\\tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit --bootstrap ./tests/BaseApiTest.php ./tests/ClassesTest.php && phpunit --bootstrap ./tests/BaseApiTest.php ./tests/AccountApiTest.php && phpunit --bootstrap ./tests/BaseApiTest.php ./tests/WordApiTest.php && phpunit --bootstrap ./tests/BaseApiTest.php ./tests/WordListApi.php && phpunit --bootstrap ./tests/BaseApiTest.php ./tests/WordsListApi.php && phpunit --bootstrap ./tests/BaseApiTest.php ./tests/WordsApiTest.php"
     }
 }
