@@ -27,7 +27,7 @@
 
 namespace wordnik\tests;
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 // This used to be required, but now gives an error:
 // Cannot redeclare phpunit_autoload()
 // require_once '/usr/lib/php/PHPUnit/Autoload.php';
@@ -53,6 +53,5 @@ class BaseApiTest extends TestCase {
   }
 
 }
-
 
 ?>
