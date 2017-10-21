@@ -256,4 +256,10 @@ class ClassesTest extends TestCase {
 		$this->assertInstanceOf(\wordnik\WordSearchResults::class, $instance);
 	}
 
+	public function testCreateWordnikOptions()
+	{
+		$instance = new \wordnik\WordnikOptions();
+		$this->assertInstanceOf(\wordnik\WordnikOptions::class, $instance);
+	}
+
 }
