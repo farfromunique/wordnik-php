@@ -1,7 +1,7 @@
 <?php
 namespace wordnik\tests;
 
-require_once 'BaseApiTest.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class AccountApiTest extends BaseApiTest {
 
