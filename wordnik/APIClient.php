@@ -94,8 +94,7 @@ class APIClient {
 
 		// Handle the response
 		if ($response_info['http_code'] == 0) {
-			throw new \Exception("TIMEOUT: api call to " . $url .
-				" took more than 5s to return" );
+			throw new \Exception("TIMEOUT: api call to " . $url . " took more than 5s to return" );
 		} else if ($response_info['http_code'] == 200) {
 			$data = json_decode($response);
 		} else if ($response_info['http_code'] == 401) {
@@ -129,7 +128,7 @@ class APIClient {
 	 * @return string the serialized object
 	 */
 	public static function toPathValue(string $value): string {
-  		return rawurlencode($value);
+		return rawurlencode($value);
 	}
 
 	/**
