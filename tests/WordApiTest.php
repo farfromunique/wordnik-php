@@ -7,7 +7,6 @@ date_default_timezone_set('America/Los_Angeles');
 
 class WordApiTest extends BaseApiTest {
 
-
   public function testGetWord() {
     $res = $this->wordApi->getWord('cat');
     $this->assertEquals('cat', $res->word);
@@ -79,6 +78,11 @@ class WordApiTest extends BaseApiTest {
     $res = $this->wordApi->getEtymologies('butter');
     $this->assertFalse(strpos($res[0], 'of Scythian origin') === false);
   }
+	public function setUp() {
+		parent::setUp();
+		$this->options = new \wordnik\WordnikOptions();
+	}
+
 
 }
 ?>
