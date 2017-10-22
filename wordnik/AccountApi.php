@@ -52,7 +52,7 @@ class AccountApi {
 		$headerParams = array();
 
 		$queryParams['password'] = $this->apiClient->toQueryValue($password);
-		$resourcePath = str_replace("{" . "username" . "}", $this->apiClient->toPathValue($username), $resourcePath);
+		$resourcePath = str_replace("{username}", $this->apiClient->toPathValue($username), $resourcePath);
 		
 		//make the API Call
 		if (! isset($body)) {
