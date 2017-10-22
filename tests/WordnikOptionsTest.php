@@ -123,5 +123,41 @@ class WordnikOptionsTest extends TestCase {
 
 		$this->opt->setWordList( new \wordnik\WordList() );
 		$this->assertEquals(new \wordnik\WordList(),$this->opt->getWordList());
+
+	}
+
+	public function magicSetPage()
+	{
+		$this->opt->magicSetPage( 2 , 10 );
+		$this->assertEquals( 10 ,$this->opt->getSkip());
+		$this->assertEquals( 10 ,$this->opt->getLimit());
+	}
+
+	public function testMagicSetYearRange()
+	{
+		$this->opt->magicSetYearRange( 1992 , 1995 );
+		$this->assertEquals( 1992 ,$this->opt->getStartYear());
+		$this->assertEquals( 1995 ,$this->opt->getEndYear());
+	}
+
+	public function testMagicSetCorpusCountRange()
+	{
+		$this->opt->magicSetCorpusCountRange( 2 , 3 );
+		$this->assertEquals( 2 , $this->opt->getMinCorpusCount());
+		$this->assertEquals( 3 , $this->opt->getMaxCorpusCount());
+	}
+	
+	public function testMagicSetDictionaryCountRange()
+	{
+		$this->opt->magicSetDictionaryCountRange( 2 , 3 );
+		$this->assertEquals( 2 , $this->opt->getMinDictionaryCount());
+		$this->assertEquals( 3 , $this->opt->getMaxDictionaryCount());
+	}
+	
+	public function testMagicSetLengthRange()
+	{
+		$this->opt->magicSetLengthRange( 2 , 3 );
+		$this->assertEquals( 2 , $this->opt->getMinLength());
+		$this->assertEquals( 3 , $this->opt->getMaxLength());
 	}
 }
