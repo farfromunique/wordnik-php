@@ -33,9 +33,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = new \Dotenv\Dotenv(__DIR__ . '/../');
 $dotenv->load();
 
-// This used to be required, but now gives an error:
-// Cannot redeclare phpunit_autoload()
-// require_once '/usr/lib/php/PHPUnit/Autoload.php';
 use PHPUnit\Framework\TestCase;
 
 class BaseApiTest extends TestCase {
@@ -45,6 +42,9 @@ class BaseApiTest extends TestCase {
     $this->apiKey = getenv('API_KEY');
     $this->username = getenv('USER_NAME');
     $this->password = getenv('PASSWORD');
+
+    $this->options = new \wordnik\WordnikOptions();
+
     $this->client = new \wordnik\APIClient($this->apiKey, $this->apiUrl);
     $this->accountApi = new \wordnik\AccountApi($this->client);
     $this->wordApi = new \wordnik\WordApi($this->client);
@@ -54,7 +54,19 @@ class BaseApiTest extends TestCase {
   }
 
   public function tearDown() {
-      unset($this->client);
+      unset(
+        $this->apiUrl,
+        $this->apiKey,
+        $this->username,
+        $this->password,
+        $this->options,
+        $this->client,
+        $this->accountApi,
+        $this->wordApi,
+        $this->wordListApi,
+        $this->wordListsApi,
+        $this->wordsApi
+      );
   }
 
 }
