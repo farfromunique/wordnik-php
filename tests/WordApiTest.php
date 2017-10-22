@@ -7,11 +7,6 @@ date_default_timezone_set('America/Los_Angeles');
 
 class WordApiTest extends BaseApiTest {
 
-  public function testGetWord() {
-    $res = $this->wordApi->getWord('cat');
-    $this->assertEquals('cat', $res->word);
-  }
-
   public function testGetWordWithSuggestions() {
     $res = $this->wordApi->getWord('cAt', $includeSuggestions=true);
     $this->assertEquals('cAt', $res->word);
@@ -81,6 +76,11 @@ class WordApiTest extends BaseApiTest {
 	public function setUp() {
 		parent::setUp();
 		$this->options = new \wordnik\WordnikOptions();
+	}
+
+	public function testGetWord() {
+		$res = $this->wordApi->getWord('cat');
+		$this->assertEquals('cat', $res->word);
 	}
 
 
