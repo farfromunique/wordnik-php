@@ -6,19 +6,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
 
-class ClassesTest extends TestCase {
-	private $apiUrl;
-	private $apiKey;
-	private $username;
-	private $password;
-	private $apiClient;
+class ClassesTest extends BaseApiTest {
 
 	public function setUp()
 	{
-		$this->apiUrl = 'http://api.wordnik.com/v4';
-		$this->apiKey = "b1672335056adf6367729016818029d8dd66d4aa52d5a7886";
-		$this->username = "aaron@acwpd.com";
-		$this->password = "CoqueAC160NK!";
+		parent::setUp();
 		$this->apiClient = new \wordnik\APIClient($this->apiKey, $this->apiUrl);
 	}
 
