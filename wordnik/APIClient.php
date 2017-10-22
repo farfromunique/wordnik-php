@@ -54,9 +54,9 @@ class APIClient {
 				}
 			}
 		}
-
-		$headers[] = "api_key: " . $this->apiKey;
 		
+		$headers[] = "api_key: " . $this->apiKey;
+
 		if (is_object($postData) or is_array($postData)) {
 			$postData = json_encode(self::sanitizeForSerialization($postData));
 		}
@@ -86,6 +86,12 @@ class APIClient {
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
 			
 			case self::$GET:
+				foreach ($headers as $header) {
+					$h = explode(': ',$header);
+					$k = $h[0];
+					$v = $h[1];
+					$queryParams[$k] = $v;
+				}
 				break;
 			
 			default:
@@ -96,6 +102,7 @@ class APIClient {
 		if (! empty($queryParams)) {
 			$url = ($url . '?' . http_build_query($queryParams));
 		}
+
 		curl_setopt($curl, CURLOPT_URL, $url);
 
 		// Make the request
