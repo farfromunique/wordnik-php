@@ -401,7 +401,6 @@ class WordApi {
 	 * useCanonical, string: If true will try to return the correct word root ('cats' -&gt; 'cat'). If false returns exactly what was requested. (optional)
 	 * @return array[string]
 	 */
-
 	 public function getEtymologies(string $word, bool $useCanonical=false): array {
 
 		//parse inputs
@@ -429,6 +428,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getAudio
 	 * Fetches audio metadata for a word.
@@ -437,7 +437,6 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return array[AudioFile]
 	 */
-
 	 public function getAudio(string $word, bool $useCanonical=false, int $limit=100): array {
 
 		//parse inputs

@@ -16,42 +16,43 @@ class WordnikOptions
 	/*                                                                */
 	/******************************************************************/
 
-	private $skip;						// int
-	private $limit;						// int
-	private $includeDuplicates;			// bool
-	private $useCanonical;				// bool
-	private $includeSuggestions;		// bool
-	private $partOfSpeech;				// string
-	private $includeRelated;			// bool
-	private $sourceDictionary;			// string
-	private $sourceDictionaries;		// string
-	private $relationshipTypes;			// string
-	private $limitPerRelationshipType;	// int
-	private $typeFormat;				// string
-	private $startYear;					// int
-	private $endYear;					// int
-	private $wlmi;						// int
 	private $caseSensitive;				// bool
-	private $includePartOfSpeech;		// string
-	private $excludePartOfSpeech;		// string
-	private $minCorpusCount;			// int
-	private $maxCorpusCount;			// int
-	private $minDictionaryCount;		// int
-	private $maxDictionaryCount;		// int
-	private $minLength;					// int
-	private $maxLength;					// int
 	private $date;						// string (yyyy-mm-dd)
-	private $findSenseForWord;			// string
-	private $includeSourceDictionaries; // string
-	private $excludeSourceDictionaries; // string
+	private $endYear;					// int
+	private $excludePartOfSpeech;		// string
+	private $excludeSourceDictionaries;	// string
 	private $expandTerms;				// string [synonym, hypernym]
+	private $findSenseForWord;			// string
+	private $hasDictionaryDef;			// bool
+	private $includeDuplicates;			// bool
+	private $includePartOfSpeech;		// string
+	private $includeRelated;			// bool
+	private $includeSourceDictionaries; // string
+	private $includeSuggestions;		// bool
 	private $includeTags;				// bool
+	private $limit;						// int
+	private $limitPerRelationshipType;	// int
+	private $maxCorpusCount;			// int
+	private $maxDictionaryCount;		// int
+	private $maxLength;					// int
+	private $minCorpusCount;			// int
+	private $minDictionaryCount;		// int
+	private $minLength;					// int
+	private $partOfSpeech;				// string
+	private $permalink;					// string
+	private $relationshipTypes;			// string
+	private $skip;						// int
 	private $sortBy;					// string [alpha, count, length]
 	private $sortOrder;					// string [asc, desc]
-	private $hasDictionaryDef;			// bool
-	private $permalink;					// string
-	private $WordList;					// WordList
+	private $sourceDictionaries;		// string
+	private $sourceDictionary;			// string
+	private $startYear;					// int
 	private $StringValue;				// array/StringValue
+	private $typeFormat;				// string
+	private $useCanonical;				// bool
+	private $wlmi;						// int
+	private $WordList;					// WordList
+
 
 	/******************************************************************/
 	/*            __construct() sets everything to default            */

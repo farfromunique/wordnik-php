@@ -54,7 +54,7 @@ class APIClient {
 				}
 			}
 		}
-		
+
 		$headers[] = "api_key: " . $this->apiKey;
 		
 		if (is_object($postData) or is_array($postData)) {
@@ -114,7 +114,6 @@ class APIClient {
 		} else {
 			throw new \Exception("Can't connect to the api: " . $url . " response code: " . $response_info['http_code']);
 		}
-
 
 		return $data;
 	}
