@@ -44,8 +44,14 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return ExampleSearchResults
 	 */
-	 public function getExamples(string $word, string $includeDuplicates='false', string $useCanonical='false', int $skip=0, int $limit=100): ExampleSearchResults {
-
+	 public function getExamples(string $word, WordnikOptions $options = null): ExampleSearchResults {
+		// Unpack Options
+		$options = $options ?? new WordnikOptions();
+		$includeDuplicates = $options->getIncludeDuplicates();
+		$useCanonical = $options->getUseCanonical();
+		$skip = $options->getSkip();
+		$limit = $options->getLimit();
+		
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}/examples";
 		$resourcePath = str_replace("{format}", "json", $resourcePath);
@@ -81,7 +87,15 @@ class WordApi {
 	 * includeSuggestions, string: Return suggestions (for correct spelling, case variants, etc.) (optional)
 	 * @return WordObject
 	 */
-	 public function getWord(string $word, string $useCanonical='false', $includeSuggestions=false): WordObject {
+	 public function getWord(string $word, WordnikOptions $options = null): WordObject {
+
+		// Unpack options
+		$options = $options ?? new WordnikOptions();
+		$useCanonical = $options->getUseCanonical();
+		$includeSuggestions = $options->getIncludeSuggestions();
+		if($useCanonical === 'false' && $includeSuggestions === 'false') {
+			$includeSuggestions = 'true';
+		}
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}";
@@ -164,7 +178,10 @@ class WordApi {
 	 * useCanonical, string: If true will try to return the correct word root ('cats' -&gt; 'cat'). If false returns exactly what was requested. (optional)
 	 * @return Example
 	 */
-	 public function getTopExample(string $word, bool $useCanonical=false): Example {
+	 public function getTopExample(string $word, WordnikOptions $options = null): Example {
+		// Unpack Options
+		$options = $options ?? new WordnikOptions();
+		$useCanonical = $options->getUseCanonical();
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}/topExample";
@@ -284,7 +301,12 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return array[Syllable]
 	 */
-	 public function getHyphenation(string $word, string $sourceDictionary='', bool $useCanonical=false, int $limit=100): array {
+	 public function getHyphenation(string $word, WordnikOptions $options = null): array {
+		// Unpack options
+		$options = $options ?? new WordnikOptions();
+		$sourceDictionary = $options->getSourceDictionary();
+		$useCanonical = $options->getUseCanonical();
+		$limit = $options->getLimit();
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}/hyphenation";
@@ -437,7 +459,11 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return array[AudioFile]
 	 */
-	 public function getAudio(string $word, bool $useCanonical=false, int $limit=100): array {
+	 public function getAudio(string $word, WordnikOptions $options = null): array {
+		// Unpack Options
+		$options = $options ?? new WordnikOptions();
+		$useCanonical = $options->getUseCanonical();
+		$limit = $options->getLimit();
 
 		//parse inputs
 		$resourcePath = "/word.{format}/{word}/audio";
@@ -466,13 +492,13 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getScrabbleScore
 	 * Returns the Scrabble score for a word
 	 * word, string: Word to get scrabble score for. (required)
 	 * @return ScrabbleScoreResult
 	 */
-
 	 public function getScrabbleScore(string $word): ScrabbleScoreResult {
 
 		//parse inputs
