@@ -44,7 +44,6 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return ExampleSearchResults
 	 */
-
 	 public function getExamples(string $word, string $includeDuplicates='false', string $useCanonical='false', int $skip=0, int $limit=100): ExampleSearchResults {
 
 		//parse inputs
@@ -73,6 +72,7 @@ class WordApi {
 		$responseObject = $this->apiClient->deserialize($response, 'ExampleSearchResults');
 		return $responseObject;
 	}
+
 	/**
 	 * getWord
 	 * Given a word as a string, returns the WordObject that represents it
@@ -81,7 +81,6 @@ class WordApi {
 	 * includeSuggestions, string: Return suggestions (for correct spelling, case variants, etc.) (optional)
 	 * @return WordObject
 	 */
-
 	 public function getWord(string $word, string $useCanonical='false', $includeSuggestions=false): WordObject {
 
 		//parse inputs
@@ -108,6 +107,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getDefinitions
 	 * Return definitions for a word
@@ -120,7 +120,6 @@ class WordApi {
 	 * includeTags, string: Return a closed set of XML tags in response (optional)
 	 * @return array[Definition]
 	 */
-
 	 public function getDefinitions(string $word, string $partOfSpeech='', string $sourceDictionaries='', int $limit=200, bool $includeRelated=true, bool $useCanonical=false, bool $includeTags=false): array {
 
 		//parse inputs
@@ -157,6 +156,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getTopExample
 	 * Returns a top example for a word
@@ -164,7 +164,6 @@ class WordApi {
 	 * useCanonical, string: If true will try to return the correct word root ('cats' -&gt; 'cat'). If false returns exactly what was requested. (optional)
 	 * @return Example
 	 */
-
 	 public function getTopExample(string $word, bool $useCanonical=false): Example {
 
 		//parse inputs
@@ -191,6 +190,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getRelatedWords
 	 * Given a word as a string, returns relationships from the Word Graph
@@ -200,7 +200,6 @@ class WordApi {
 	 * limitPerRelationshipType, int: Restrict to the supplied relatinship types (optional)
 	 * @return array[Related]
 	 */
-
 	 public function getRelatedWords(string $word, string $relationshipTypes='', bool $useCanonical=false, int $limitPerRelationshipType=0): array {
 
 		//parse inputs
@@ -232,6 +231,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getTextPronunciations
 	 * Returns text pronunciations for a given word
@@ -242,7 +242,6 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return array[TextPron]
 	 */
-
 	 public function getTextPronunciations(string $word, string $sourceDictionary='', string $typeFormat='', bool $useCanonical=false, int $limit=100): array {
 
 		//parse inputs
@@ -275,6 +274,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getHyphenation
 	 * Returns syllable information for a word
@@ -284,7 +284,6 @@ class WordApi {
 	 * limit, int: Maximum number of results to return (optional)
 	 * @return array[Syllable]
 	 */
-
 	 public function getHyphenation(string $word, string $sourceDictionary='', bool $useCanonical=false, int $limit=100): array {
 
 		//parse inputs
@@ -315,6 +314,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getWordFrequency
 	 * Returns word usage over time
@@ -324,7 +324,6 @@ class WordApi {
 	 * endYear, int: Ending Year (optional)
 	 * @return FrequencySummary
 	 */
-
 	 public function getWordFrequency(string $word, bool $useCanonical=false, int $startYear=0, int $endYear=9999): FrequencySummary {
 
 		//parse inputs
@@ -354,6 +353,7 @@ class WordApi {
 		$responseObject = $this->apiClient->deserialize($response, 'FrequencySummary');
 		return $responseObject;
 	}
+
 	/**
 	 * getPhrases
 	 * Fetches bi-gram phrases for a word
@@ -363,7 +363,6 @@ class WordApi {
 	 * useCanonical, string: If true will try to return the correct word root ('cats' -&gt; 'cat'). If false returns exactly what was requested. (optional)
 	 * @return array[Bigram]
 	 */
-
 	 public function getPhrases(string $word, int $limit=100, int $wlmi=0, bool $useCanonical=false): array {
 
 		//parse inputs
@@ -394,6 +393,7 @@ class WordApi {
 		return $responseObject;
 
 	}
+
 	/**
 	 * getEtymologies
 	 * Fetches etymology data
