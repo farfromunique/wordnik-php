@@ -43,8 +43,6 @@ class BaseApiTest extends TestCase {
     $this->username = getenv('USER_NAME');
     $this->password = getenv('PASSWORD');
 
-    $this->options = new \wordnik\WordnikOptions();
-
     $this->client = new \wordnik\APIClient($this->apiKey, $this->apiUrl);
     $this->accountApi = new \wordnik\AccountApi($this->client);
     $this->wordApi = new \wordnik\WordApi($this->client);
