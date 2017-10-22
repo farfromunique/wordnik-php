@@ -18,7 +18,8 @@ class AccountApiTest extends BaseApiTest {
     $this->assertObjectHasAttribute('userSignature', $res);
   }
 
-/* Disabling this test, as the underlying function is disabled
+/* Disabling this test, as the underlying function is disabled.
+ *  the underlying function is disabled because the API owner's site doesn't have a functional version.
   public function testAuthenticatePost() {
     $res = $this->accountApi->authenticatePost($this->username, $this->password);
     $this->assertObjectHasAttribute('token', $res);
