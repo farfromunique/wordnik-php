@@ -61,11 +61,11 @@ class WordnikOptions
 	{
 		$this->skip = 0;
 		$this->limit = 100;
-		$this->includeDuplicates = false;
-		$this->useCanonical = false;
-		$this->includeSuggestions = false;
+		$this->includeDuplicates = 'false';
+		$this->useCanonical = 'false';
+		$this->includeSuggestions = 'false';
 		$this->partOfSpeech = '';
-		$this->includeRelated = true;
+		$this->includeRelated = 'true';
 		$this->sourceDictionary = '';
 		$this->sourceDictionaries = '';
 		$this->relationshipTypes = '';
@@ -74,7 +74,7 @@ class WordnikOptions
 		$this->startYear = 1800;
 		$this->endYear = 2012;
 		$this->wlmi = 0;
-		$this->caseSensitive = false;
+		$this->caseSensitive = 'false';
 		$this->includePartOfSpeech = '';
 		$this->excludePartOfSpeech = '';
 		$this->minCorpusCount = 5;
@@ -88,10 +88,10 @@ class WordnikOptions
 		$this->includeSourceDictionaries = '';
 		$this->excludeSourceDictionaries = '';
 		$this->expandTerms = '';
-		$this->includeTags = false;
+		$this->includeTags = 'false';
 		$this->sortBy = 'alpha';
 		$this->sortOrder = 'desc';
-		$this->hasDictionaryDef = true;
+		$this->hasDictionaryDef = 'true';
 		$this->permalink = '';
 		$this->WordList = new WordList;
 		$this->StringValue = array();
@@ -125,19 +125,19 @@ class WordnikOptions
 
 	public function setIncludeDuplicates(bool $attrValue): WordnikOptions
 	{
-		$this->includeDuplicates = $attrValue;
+		$this->includeDuplicates = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
 	public function setUseCanonical(bool $attrValue): WordnikOptions
 	{
-		$this->useCanonical = $attrValue;
+		$this->useCanonical = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
 	public function setIncludeSuggestions(bool $attrValue): WordnikOptions
 	{
-		$this->includeSuggestions = $attrValue;
+		$this->includeSuggestions = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
@@ -149,7 +149,7 @@ class WordnikOptions
 
 	public function setIncludeRelated(bool $attrValue): WordnikOptions
 	{
-		$this->includeRelated = $attrValue;
+		$this->includeRelated = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
@@ -203,7 +203,7 @@ class WordnikOptions
 
 	public function setCaseSensitive(bool $attrValue): WordnikOptions
 	{
-		$this->caseSensitive = $attrValue;
+		$this->caseSensitive = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
@@ -299,7 +299,7 @@ class WordnikOptions
 
 	public function setIncludeTags(bool $attrValue): WordnikOptions
 	{
-		$this->includeTags = $attrValue;
+		$this->includeTags = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
@@ -329,7 +329,7 @@ class WordnikOptions
 
 	public function setHasDictionaryDef(bool $attrValue): WordnikOptions
 	{
-		$this->hasDictionaryDef = $attrValue;
+		$this->hasDictionaryDef = ($attrValue ? 'true' : 'false');
 		return $this;
 	}
 
@@ -415,15 +415,15 @@ class WordnikOptions
 
 	public function getLimit(): int { return $this->limit; }
 
-	public function getIncludeDuplicates(): bool { return $this->includeDuplicates; }
+	public function getIncludeDuplicates(): string { return $this->includeDuplicates; }
 
-	public function getUseCanonical(): bool { return $this->useCanonical; }
+	public function getUseCanonical(): string { return $this->useCanonical; }
 
-	public function getIncludeSuggestions(): bool { return $this->includeSuggestions; }
+	public function getIncludeSuggestions(): string { return $this->includeSuggestions; }
 
 	public function getPartOfSpeech(): string { return $this->partOfSpeech; }
 
-	public function getIncludeRelated(): bool { return $this->includeRelated; }
+	public function getIncludeRelated(): string { return $this->includeRelated; }
 
 	public function getSourceDictionary(): string { return $this->sourceDictionary; }
 
@@ -441,7 +441,7 @@ class WordnikOptions
 
 	public function getWlmi(): int { return $this->wlmi; }
 
-	public function getCaseSensitive(): bool { return $this->caseSensitive; }
+	public function getCaseSensitive(): string { return $this->caseSensitive; }
 
 	public function getIncludePartOfSpeech(): string { return $this->includePartOfSpeech; }
 
@@ -469,13 +469,13 @@ class WordnikOptions
 
 	public function getExpandTerms(): string { return $this->expandTerms; }
 
-	public function getIncludeTags(): bool { return $this->includeTags; }
+	public function getIncludeTags(): string { return $this->includeTags; }
 
 	public function getSortBy(): string {return $this->sortBy; }
 
 	public function getSortOrder(): string { return $this->sortOrder; }
 
-	public function getHasDictionaryDef(): bool { return $this->hasDictionaryDef; }
+	public function getHasDictionaryDef(): string { return $this->hasDictionaryDef; }
 
 	public function getPermalink(): string { return $this->permalink; }
 
