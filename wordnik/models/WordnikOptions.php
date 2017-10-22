@@ -368,32 +368,32 @@ class WordnikOptions
 	/*                                                                */
 	/******************************************************************/
 
-	public function magicGetPage(int $pageNumber, int $pageSize): WordnikOptions
+	public function magicSetPage(int $pageNumber, int $pageSize): WordnikOptions
 	{
 		$this->skip = (($pageNumber-1) * $pageSize);
 		$this->limit = $pageSize;
 		return $this;
 	}
 
-	public function setYearRange(int $start, int $end): WordnikOptions
+	public function magicSetYearRange(int $start, int $end): WordnikOptions
 	{
 		$this->setStartYear($start)->setEndYear($end);
 		return $this;
 	}
 
-	public function setCorpusCountRange(int $min, int $max): WordnikOptions
+	public function magicSetCorpusCountRange(int $min, int $max): WordnikOptions
 	{
 		$this->setMinCorpusCount($min)->setMaxCorpusCount($max);
 		return $this;
 	}
 
-	public function setDictionaryCountRange(int $min, int $max): WordnikOptions
+	public function magicSetDictionaryCountRange(int $min, int $max): WordnikOptions
 	{
 		$this->setMinDictionaryCount($min)->setMaxDictionaryCount($max);
 		return $this;
 	}
 
-	public function setLengthRange(int $min, int $max): WordnikOptions
+	public function magicSetLengthRange(int $min, int $max): WordnikOptions
 	{
 		$this->setMinLength($min)->setMaxLength($max);
 		return $this;
