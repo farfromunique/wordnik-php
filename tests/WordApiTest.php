@@ -7,18 +7,6 @@ date_default_timezone_set('America/Los_Angeles');
 
 class WordApiTest extends BaseApiTest {
 
-  public function testWordApis() {
-    $ch = curl_init("http://api.wordnik.com/v4/word.json");
-    if (! $ch) {
-    	die("No php curl handle");
-    }
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-    $data = curl_exec($ch);
-    $doc = json_decode($data);
-
-    $this->assertEquals(12, count($doc->apis));
-  }
 
   public function testGetWord() {
     $res = $this->wordApi->getWord('cat');
