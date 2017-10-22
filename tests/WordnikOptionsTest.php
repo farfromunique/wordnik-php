@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class WordnikOptionsTest extends TestCase {
 	private $opt;
 
-	public function __construct()
+	public function setUp()
 	{
 		$this->opt = new \wordnik\WordnikOptions();
 	}
