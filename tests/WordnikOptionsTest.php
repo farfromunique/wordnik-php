@@ -23,19 +23,19 @@ class WordnikOptionsTest extends TestCase {
 		$this->assertEquals(2,$this->opt->getLimit());
 
 		$this->opt->setIncludeDuplicates( true );
-		$this->assertEquals(true,$this->opt->getIncludeDuplicates());
+		$this->assertEquals('true',$this->opt->getIncludeDuplicates());
 
 		$this->opt->setUseCanonical( true );
-		$this->assertEquals(true,$this->opt->getUseCanonical());
+		$this->assertEquals('true',$this->opt->getUseCanonical());
 
 		$this->opt->setIncludeSuggestions( true );
-		$this->assertEquals(true,$this->opt->getIncludeSuggestions());
+		$this->assertEquals('true',$this->opt->getIncludeSuggestions());
 
 		$this->opt->setPartOfSpeech( 'verb' );
 		$this->assertEquals('verb',$this->opt->getPartOfSpeech());
 
 		$this->opt->setIncludeRelated( true );
-		$this->assertEquals(true,$this->opt->getIncludeRelated());
+		$this->assertEquals('true',$this->opt->getIncludeRelated());
 
 		$this->opt->setSourceDictionary( 'all' );
 		$this->assertEquals('all',$this->opt->getSourceDictionary());
@@ -62,7 +62,7 @@ class WordnikOptionsTest extends TestCase {
 		$this->assertEquals(1,$this->opt->getWlmi());
 
 		$this->opt->setCaseSensitive( true );
-		$this->assertEquals(true,$this->opt->getCaseSensitive());
+		$this->assertEquals('true',$this->opt->getCaseSensitive());
 
 		$this->opt->setIncludePartOfSpeech( 'noun' );
 		$this->assertEquals('noun',$this->opt->getIncludePartOfSpeech());
@@ -107,7 +107,7 @@ class WordnikOptionsTest extends TestCase {
 		$this->assertEquals('synonym',$this->opt->getExpandTerms());
 
 		$this->opt->setIncludeTags( true );
-		$this->assertEquals(true,$this->opt->getIncludeTags());
+		$this->assertEquals('true',$this->opt->getIncludeTags());
 
 		$this->opt->setSortBy( 'alpha' );
 		$this->assertEquals('alpha',$this->opt->getSortBy());
@@ -116,7 +116,7 @@ class WordnikOptionsTest extends TestCase {
 		$this->assertEquals('asc',$this->opt->getSortOrder());
 
 		$this->opt->setHasDictionaryDef( false );
-		$this->assertEquals(false,$this->opt->getHasDictionaryDef());
+		$this->assertEquals('false',$this->opt->getHasDictionaryDef());
 
 		$this->opt->setPermalink( 'http://www.wordnik.com/test' );
 		$this->assertEquals('http://www.wordnik.com/test',$this->opt->getPermalink());
