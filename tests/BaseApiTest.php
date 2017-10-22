@@ -28,6 +28,11 @@
 namespace wordnik\tests;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
+/* Load the .env file into environment variables. */
+$dotenv = new \Dotenv\Dotenv(__DIR__ . '/../');
+$dotenv->load();
+
 // This used to be required, but now gives an error:
 // Cannot redeclare phpunit_autoload()
 // require_once '/usr/lib/php/PHPUnit/Autoload.php';
