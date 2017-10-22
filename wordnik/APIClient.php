@@ -54,10 +54,9 @@ class APIClient {
 				}
 			}
 		}
-		if (! $added_api_key) {
-			$headers[] = "api_key: " . $this->apiKey;
-		}
-
+		
+		$headers[] = "api_key: " . $this->apiKey;
+		
 		if (is_object($postData) or is_array($postData)) {
 			$postData = json_encode(self::sanitizeForSerialization($postData));
 		}
